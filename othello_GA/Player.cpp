@@ -20,3 +20,24 @@ void Player::printPlayerInfo() {
 		std::cout << "BLACK(æU)\n";
 	}
 }
+
+bool Player::canPutStone(Point wantToPutPoint) {
+	return false;
+}
+
+Point Player::inputPoint() {
+	int x, y;
+	std::cout << "input X : ";
+	std::cin >> x;
+	std::cout << "input Y : ";
+	std::cin >> y;
+	nextPoint = Point(x, y);
+
+	return nextPoint;
+	
+}
+
+StoneStatus Player::getPlayerColor()
+{
+	return playerColor;
+}
