@@ -2,11 +2,6 @@
 #include "Board.h"
 
 
-Point * Board::serchAnotherColorAround(Point)
-{
-	return nullptr;
-}
-
 Board::Board()//ƒQ[ƒ€ŠJn‚Ìƒ{[ƒh‚Ìó‹µ
 {
 	stoneOnBoard[BOARDSIZE / 2 - 1][BOARDSIZE / 2 - 1].setStoneColor(WHITE);
@@ -83,30 +78,29 @@ bool Board::isEmptyPoint(Point point)//w’è‚µ‚½À•W‚É‚Ü‚¾Î‚ª’u‚©‚ê‚Ä‚È‚¢‚©
 		return true;
 	}
 	else {
-		std::cout << "cannot put ";
-		point.printPoint();
-		std::cout << "\n";
+//		std::cout << "cannot put ";
+//		point.printPoint();
+//		std::cout << "\n";
 		return false;
 	}
 }
 
-bool Board::reversePointOnBoard(Point putPoint,StoneStatus playerColor)//ˆø”‚ÌÀ•W‚ÉÎ‚ğ‰Â”\‚ÈÎ‚Í‚Ğ‚Á‚­‚è•Ô‚·
+bool Board::canReversePointOnBoard(Point putPoint,StoneStatus playerColor)//putPoint‚É’u‚­‚±‚Æ‚ª‰Â”\‚Å‚ ‚é‚©
 {
 	//putPointÀ•W‚Ìü‚è‚ÌŒŸõ‚ğs‚¤
-	int count = 0;
+	int flagCount = 0;
 	int const x = putPoint.getX();
 	int const y = putPoint.getY();
 	Point sarchResult,toPoint;
 	for(int searchPointY =y - 1;searchPointY <= y + 1;searchPointY++){
 		for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
 			int vectorX, vectorY;
-			//if (searchPointX == x && searchPointY == y) continue;
 			if (searchPointX < 0 || searchPointX > 7 || searchPointY < 0 || searchPointY > 7) continue;
 			if (getPointColor(searchPointX, searchPointY) != playerColor && getPointColor(searchPointX,searchPointY) != EMPTY) {
 				sarchResult = Point(searchPointX,searchPointY);
 				checkVector(sarchResult, putPoint, &vectorX, &vectorY);//ŒŸõ‚·‚é•ûŒü‚ğŒˆ‚ß‚é
 				if (searchPoint(&vectorX, &vectorY, playerColor, &toPoint, putPoint)) {
-					reversePointToPoint(toPoint, putPoint, playerColor, &vectorX, &vectorY);
+//					reversePointToPoint(toPoint, putPoint, playerColor, &vectorX, &vectorY);
 					return true;
 				}
 			}
@@ -114,7 +108,30 @@ bool Board::reversePointOnBoard(Point putPoint,StoneStatus playerColor)//ˆø”‚Ì
 	}
 	return false;
 }
-
+bool Board::reversePointOnBoard(Point putPoint, StoneStatus playerColor)//ˆø”‚ÌÀ•W‚ÉÎ‚ğ‰Â”\‚ÈÎ‚Í‚Ğ‚Á‚­‚è•Ô‚·
+{
+	int flagCount = 0;
+	//putPointÀ•W‚Ìü‚è‚ÌŒŸõ‚ğs‚¤
+	int const x = putPoint.getX();
+	int const y = putPoint.getY();
+	Point sarchResult, toPoint;
+	for (int searchPointY = y - 1; searchPointY <= y + 1; searchPointY++) {
+		for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
+			int vectorX, vectorY;
+			if (searchPointX < 0 || searchPointX > 7 || searchPointY < 0 || searchPointY > 7) continue;
+			if (getPointColor(searchPointX, searchPointY) != playerColor && getPointColor(searchPointX, searchPointY) != EMPTY) {
+				sarchResult = Point(searchPointX, searchPointY);
+				checkVector(sarchResult, putPoint, &vectorX, &vectorY);//ŒŸõ‚·‚é•ûŒü‚ğŒˆ‚ß‚é
+				if (searchPoint(&vectorX, &vectorY, playerColor, &toPoint, putPoint)) {
+					reversePointToPoint(toPoint, putPoint, playerColor, &vectorX, &vectorY);
+					flagCount++;
+				}
+			}
+		}
+	}
+	if (flagCount > 0) return true;
+	else return false;
+}
 void Board::checkVector(Point sarchResult, Point putPoint, int *vectorX, int *vectorY)
 {
 	*vectorX = sarchResult.getX() - putPoint.getX();
@@ -127,11 +144,13 @@ void Board::reversePointToPoint(Point oldPoint, Point putPoint, StoneStatus play
 	int putY = putPoint.getY() + *vectorY;
 	while (oldPoint.getX() != putX || oldPoint.getY() != putY) {
 		reverceStoneOnBoard(putX, putY);
-		printf("( %d , %d )\n", putX, putY);
+		printf("REVERSE : ( %d , %d )\n", putX, putY);
 		putX += *vectorX;
 		putY += *vectorY;
 	}
 }
+
+
 
 bool Board::searchPoint(int *x, int *y, StoneStatus playerColor,Point *toPoint,Point putPoint)
 //putPoint‚©‚ç(x,y)•ûŒü‚ÖplayerColor‚Æ•Ê‚ÌF‚ª‘±‚¢‚Ä‚¢‚é‚©ŒŸõ‚µ‚»‚Ìæ‚É“¯‚¶F‚ª‚ ‚Á‚½ê‡‚Í‚»‚ÌÀ•W‚ğserchResult‚ÉŠi”[‚·‚é
@@ -151,4 +170,32 @@ bool Board::searchPoint(int *x, int *y, StoneStatus playerColor,Point *toPoint,P
 		}
 	}
 	return false;
+}
+
+bool Board::searchCanPutStone(StoneStatus playerColor, Point *canPutPoint, int *count)
+{
+	Point *pointTmp = canPutPoint;
+	for (int x = 0; x < BOARDSIZE; x++) {
+		for (int y = 0; y < BOARDSIZE; y++) {
+			Point sarchResult, toPoint,putPoint(x,y);
+			for (int searchPointY = y - 1; searchPointY <= y + 1; searchPointY++) {
+				for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
+					int vectorX, vectorY;
+					if (searchPointX < 0 || searchPointX > 7 || searchPointY < 0 || searchPointY > 7) continue;
+					if (!isEmptyPoint(putPoint)) continue;
+					if (getPointColor(searchPointX, searchPointY) != playerColor && getPointColor(searchPointX, searchPointY) != EMPTY) {
+						sarchResult = Point(searchPointX, searchPointY);
+						checkVector(sarchResult, putPoint, &vectorX, &vectorY);//ŒŸõ‚·‚é•ûŒü‚ğŒˆ‚ß‚é
+						if (searchPoint(&vectorX, &vectorY, playerColor, &toPoint, putPoint)) {
+							canPutPoint->setPoint(putPoint);
+							canPutPoint++;
+							(*count)++;
+						}
+					}
+				}
+			}
+		}
+	}
+	if (pointTmp == canPutPoint) return true;
+	else return false;
 }

@@ -7,7 +7,6 @@
 
 class Board
 {
-	Point *serchAnotherColorAround(Point);
 	Stone stoneOnBoard[BOARDSIZE][BOARDSIZE];
 public:
 	Board();
@@ -20,9 +19,11 @@ public:
 	void reverceStoneOnBoard(Point);
 	bool isEmptyPoint(Point);
 
+	bool canReversePointOnBoard(Point, StoneStatus);
 	bool reversePointOnBoard(Point ,StoneStatus);
 	void checkVector(Point, Point, int*, int*);
 	void reversePointToPoint(Point, Point, StoneStatus, int const*,int const*);
 	bool searchPoint(int*, int*, StoneStatus,Point*,Point);
+	bool searchCanPutStone(StoneStatus, Point *, int *);
 };
 

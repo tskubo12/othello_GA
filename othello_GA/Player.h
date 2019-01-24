@@ -15,5 +15,6 @@ public:
 	bool canPutStone(Point);
 	Point inputPoint();
 	StoneStatus getPlayerColor();
+	bool getCanPutPoint(Point, Point*);
 };
 

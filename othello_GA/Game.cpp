@@ -40,10 +40,16 @@ Game::~Game()
 
 bool Game::nextTurn(Player *nextPlayer)
 {
+	Point canPutPoint[30];
+	int canPutPointCount = 0;
+	board_m.searchCanPutStone(nextPlayer->getPlayerColor(), canPutPoint, &canPutPointCount);
+	for (int i = 0; i < canPutPointCount; i++) {
+		canPutPoint[i].printPoint();
+	}
 	Point point = nextPlayer->inputPoint();
-
-	if (board_m.isEmptyPoint(point) && board_m.reversePointOnBoard(point,nextPlayer->getPlayerColor())){
+	if (board_m.isEmptyPoint(point) && board_m.canReversePointOnBoard(point,nextPlayer->getPlayerColor())){
 		board_m.setStone(point, nextPlayer->getPlayerColor());
+		board_m.reversePointOnBoard(point, nextPlayer->getPlayerColor());
 		return true;
 	}
 	else {

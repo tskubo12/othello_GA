@@ -41,3 +41,9 @@ StoneStatus Player::getPlayerColor()
 {
 	return playerColor;
 }
+
+bool Player::getCanPutPoint(Point putPoint, Point * canPutPointList)
+{
+
+	return false;
+}
