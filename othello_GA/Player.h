@@ -5,16 +5,18 @@
 #include <iostream>>
 class Player
 {
-	StoneStatus playerColor;
+	Color playerColor;
 	Point *canReversePointBuf;
 	Point nextPoint;
+	bool playerStatus;
 public:
-	Player(StoneStatus);
+	Player();
+	Player(Color);
 	~Player();
 	void printPlayerInfo();
 	bool canPutStone(Point);
-	Point inputPoint();
-	StoneStatus getPlayerColor();
+	bool inputPoint(Point &);
+	Color getPlayerColor();
 	bool getCanPutPoint(Point, Point*);
 };
 

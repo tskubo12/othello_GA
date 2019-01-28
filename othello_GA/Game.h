@@ -6,12 +6,13 @@
 class Game
 {
 	Board board_m;
+	Player player[2];
 	Point canReverseStonePoint[20];
 public:
 	Game();
 	~Game();
-	bool nextTurn(Player *);
-	Point *canReversePoint(Point);
+	bool nextTurn(Player & ,int &);
+	bool start_game();
 	
 };
 

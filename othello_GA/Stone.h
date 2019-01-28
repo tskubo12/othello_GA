@@ -1,18 +1,19 @@
 #pragma once
 #include <iostream>
-enum StoneStatus {
+enum Color {
 	EMPTY = 0,
 	WHITE = 1,
 	BLACK = 2,
 };
 class Stone
 {
-	StoneStatus stoneColor;
+	Color stoneColor;
 public:
 	Stone();
-	void setStoneColor(StoneStatus);
+	void setStoneColor(Color);
 	void reverseStone();
 	~Stone();
-	StoneStatus getStoneColor();
+	Color getStoneColor();
+	Color getEnemyColor(Color);
 };
 

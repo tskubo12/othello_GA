@@ -16,5 +16,6 @@ public:
 	void setPoint(int,int);
 	void setPoint(Point);
 	void incrementPoint(int, int);
+	bool array_have_thisPoint(Point *,int const&);
 };
 

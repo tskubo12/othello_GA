@@ -7,7 +7,7 @@ Stone::Stone()
 	stoneColor = EMPTY;
 }
 
-void Stone::setStoneColor(StoneStatus color) {
+void Stone::setStoneColor(Color color) {
 	stoneColor = color;
 }
 
@@ -18,8 +18,15 @@ void Stone::reverseStone()
 	else std::cout << "there are not Stone \n";
 }
 
-StoneStatus Stone::getStoneColor(){
+Color Stone::getStoneColor(){
 	return stoneColor;
+}
+
+Color Stone::getEnemyColor(Color myColor)
+{
+	if (myColor == BLACK) return WHITE;
+	else if(myColor == WHITE) return BLACK;
+	else std::cout << "this Point dont have Stone";
 }
 
 Stone::~Stone()

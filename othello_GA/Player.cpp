@@ -2,11 +2,14 @@
 #include "Player.h"
 
 
-Player::Player(StoneStatus color)
+Player::Player(Color color)
 {
 	playerColor = color;
 }
 
+Player::Player()
+{
+}
 
 Player::~Player()
 {
@@ -25,19 +28,25 @@ bool Player::canPutStone(Point wantToPutPoint) {
 	return false;
 }
 
-Point Player::inputPoint() {
+bool Player::inputPoint(Point &point) {
 	int x, y;
 	std::cout << "input X : ";
 	std::cin >> x;
 	std::cout << "input Y : ";
 	std::cin >> y;
-	nextPoint = Point(x, y);
-
-	return nextPoint;
+	
+	if (x >= 0 && x < BOARDSIZE && y >= 0 && y < BOARDSIZE)
+	{
+		point.setPoint(x, y);
+		return true;
+	}
+	else {
+		return false;
+	} 
 	
 }
 
-StoneStatus Player::getPlayerColor()
+Color Player::getPlayerColor()
 {
 	return playerColor;
 }
