@@ -40,7 +40,6 @@ bool Game::nextTurn(Player &nextPlayer,int &passCounter)
 	}
 
 	//Î‚ğ’u‚«AŠÔ‚ÌÎ‚ğ”½“]‚·‚é
-	int x, y;
 	Point point;
 	if (nextPlayer.inputPoint(point)) {
 		if (point.array_have_thisPoint(canPutPoint, canPutPointCount)) {
@@ -50,7 +49,7 @@ bool Game::nextTurn(Player &nextPlayer,int &passCounter)
 			return true;
 		}
 	}
-	std::cout << "input Error \"PLEASE RETRY\"\n";
+	std::cout << "input Error \"PLEASE rETRY\"\n";
 	return false;
 }
 
@@ -63,6 +62,14 @@ bool Game::start_game()
 		while (!nextTurn(player[player_i],passCounter));
 		counter++;
 	}
+	return false;
+}
+
+bool Game::finish_game()
+{
+	Othello_Score score;
+	board_m.compute_result(score);
+	score.print_result();
 	return false;
 }
 

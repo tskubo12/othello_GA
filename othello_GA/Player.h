@@ -2,7 +2,7 @@
 #include "Stone.h"
 #include "Point.h"
 #include "Board.h"
-#include <iostream>>
+#include <iostream>
 class Player
 {
 	Color playerColor;

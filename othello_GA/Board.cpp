@@ -56,7 +56,6 @@ Board::~Board()
 
 //ボードの状況をプリントする
 void Board::printBoard() {
-	int a;
 	std::cout << "　";
 	for (int i = 0; i < BOARDSIZE; i++) {
 		std::cout << i << " " ;
@@ -102,24 +101,12 @@ Color Board::getPointColor(Point point)
 	return stoneOnBoard[point.getY()][point.getX()].getStoneColor();
 }
 
-Color Board::getPointColor(int x, int y)
-{
-
-	return stoneOnBoard[y][x].getStoneColor();
-}
-
 
 //指定したpoint上にある石を反転させる
 void Board::reverceStoneOnBoard(int x, int y)
 {
 	stoneOnBoard[y][x].reverseStone();
 }
-
-void Board::reverceStoneOnBoard(Point point)
-{
-	reverceStoneOnBoard(point.getX(), point.getY());
-}
-
 
 //指定した座標にまだ石が置かれていないか
 bool Board::isEmptyPoint(Point point){
@@ -144,7 +131,6 @@ bool Board::canReversePointOnBoard(Point want_to_put,Color playerColor){
 	//want_to_putの左上から真上、右上、左....右下の順番でsearchResultに格納されていく
 	for(int searchPointY =y - 1;searchPointY <= y + 1;searchPointY++){
 		for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
-			int vectorX, vectorY;
 			searchPoint.setPoint(searchPointX, searchPointY);
 
 			/*座標(searchPointX,searchPointY)が盤外や空白を指したとき検索を行わない*/
@@ -168,28 +154,6 @@ bool Board::canReversePointOnBoard(Point want_to_put,Color playerColor){
 
 //指定したpointからひっくり返せる石の座標を返す
 void Board::reversePointOnBoard(Point putPoint, Color playerColor){
-/*
-	int flagCount = 0;
-	//putPoint座標の周りの検索を行う
-	int const x = putPoint.getX();
-	int const y = putPoint.getY();
-	Point sarchResult, toPoint;
-	for (int searchPointY = y - 1; searchPointY <= y + 1; searchPointY++) {
-		for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
-			int vectorX, vectorY;
-			if (searchPointX < 0 || searchPointX > 7 || searchPointY < 0 || searchPointY > 7) continue;
-			if (getPointColor(searchPointX, searchPointY) != playerColor && getPointColor(searchPointX, searchPointY) != EMPTY) {
-				sarchResult = Point(searchPointX, searchPointY);
-				checkVector(sarchResult, putPoint, &vectorX, &vectorY);//検索する方向を決める
-
-				if (can_reach_myStonePoint(&vectorX, &vectorY, playerColor, &toPoint, putPoint)) {
-					reversePointToPoint(toPoint, putPoint, playerColor, &vectorX, &vectorY);
-					flagCount++;
-				}
-			}
-		}
-	}
-*/
 	//9方向への検索を行う
 	int vectorX, vectorY;
 	Point reachedPoint;
@@ -201,13 +165,19 @@ void Board::reversePointOnBoard(Point putPoint, Color playerColor){
 		}
 	}
 }
-void Board::checkVector(Point sarchResult, Point putPoint, int *vectorX, int *vectorY)
+
+void Board::compute_result(Othello_Score &score)
 {
-	*vectorX = sarchResult.getX() - putPoint.getX();
-	*vectorY = sarchResult.getY() - putPoint.getY();
+	int rowNum, columNum;
+	for (rowNum = 0; rowNum < BOARDSIZE; rowNum++) {
+		for (columNum = 0; columNum < BOARDSIZE; columNum++) {
+			Point point(columNum, rowNum);
+			score.score_add(getPointColor(point));
+		}
+	}
 }
 
-//
+
 void Board::reversePointToPoint(Point oldPoint, Point putPoint, Color playerColor, int const &vectorX, int const &vectorY)
 {
 	int putX = putPoint.getX() + vectorX;
@@ -219,18 +189,6 @@ void Board::reversePointToPoint(Point oldPoint, Point putPoint, Color playerColo
 		putY += vectorY;
 	}
 }
-
-void Board::reversePointToPoint(Point oldPoint, Point putPoint, Color)
-{
-	int vectorX, vectorY;
-	int diffX = putPoint.getX() - oldPoint.getX();
-	int diffY = putPoint.getY() - oldPoint.getY();
-	setVector(diffX ,vectorX);
-	setVector(diffY, vectorY);
-
-
-}
-
 
 
 //putPointから(x,y)方向へplayerColorと別の色が続いているか検索しその先に同じ色があった場合はその座標をtoPointに格納する
@@ -278,3 +236,5 @@ bool Board::searchCanPutStone(Color playerColor, Point *canPutPoint, int &count)
 	if (pointTmp != canPutPoint) return true;
 	else return false;
 }
+
+

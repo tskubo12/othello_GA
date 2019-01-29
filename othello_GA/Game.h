@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "Point.h"
+#include "Score.h"
 class Game
 {
 	Board board_m;
@@ -13,6 +14,7 @@ public:
 	~Game();
 	bool nextTurn(Player & ,int &);
 	bool start_game();
+	bool finish_game();
 	
 };
 
