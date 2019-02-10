@@ -1,22 +1,25 @@
 #pragma once
+#include"Header.h"
 #include "Stone.h"
 #include "Point.h"
 #include "Board.h"
-#include <iostream>
 class Player
 {
 	Color playerColor;
-	Point *canReversePointBuf;
 	Point nextPoint;
 	bool playerStatus;
+	vector<Point> canPutPointList;
+
+
 public:
 	Player();
 	Player(Color);
-	~Player();
 	void printPlayerInfo();
-	bool canPutStone(Point);
+	void printPointList();
 	bool inputPoint(Point &);
+	bool inputNextPoint();
 	Color getPlayerColor();
-	bool getCanPutPoint(Point, Point*);
+	bool createCanPutPointList(Board&);
+	bool list_have_thisPoint(Point);
 };
 

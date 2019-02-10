@@ -24,14 +24,11 @@ bool Game::nextTurn(Player &nextPlayer,int &passCounter)
 	std::cout << "今のターンは" ;
 	nextPlayer.printPlayerInfo();
 
-	Point canPutPoint[30];
-	int canPutPointCount = 0;
 	Color playerColor = nextPlayer.getPlayerColor();
+
 	//そのプレイヤーが石のおける場所を表示する
-	if (board_m.searchCanPutStone(playerColor, canPutPoint, canPutPointCount)) {
-		for (int i = 0; i < canPutPointCount; i++) {
-			canPutPoint[i].printPoint();
-		}	
+	if (nextPlayer.createCanPutPointList(board_m)) {
+		nextPlayer.printPointList();
 	}
 	else {
 		std::cout << "PASS\n";
@@ -42,14 +39,14 @@ bool Game::nextTurn(Player &nextPlayer,int &passCounter)
 	//石を置き、間の石を反転する
 	Point point;
 	if (nextPlayer.inputPoint(point)) {
-		if (point.array_have_thisPoint(canPutPoint, canPutPointCount)) {
+		if (nextPlayer.list_have_thisPoint(point)) {
 			board_m.setStone(point, playerColor);
 			board_m.reversePointOnBoard(point, playerColor);
 			passCounter = 0;
 			return true;
 		}
 	}
-	std::cout << "input Error \"PLEASE rETRY\"\n";
+	std::cout << "input Error \"PLEASE RETRY\"\n";
 	return false;
 }
 
@@ -68,6 +65,7 @@ bool Game::start_game()
 bool Game::finish_game()
 {
 	Othello_Score score;
+	score.compute_result(board_m);
 	board_m.compute_result(score);
 	score.print_result();
 	return false;

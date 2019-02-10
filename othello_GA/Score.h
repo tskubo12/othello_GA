@@ -1,15 +1,16 @@
 #pragma once
-#include <iostream>
+#include"Header.h"
 #include "Stone.h"
+#include "Board.h"
 class Othello_Score
 {
 	int black_num;
 	int white_num;
 	int empty_num;
+	void score_add(Color);
 public:
 	Othello_Score();
-	~Othello_Score();
-	void score_add(Color);
 	void print_result();
+	void compute_result(Board&);
 };
 

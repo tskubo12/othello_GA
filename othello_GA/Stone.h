@@ -1,10 +1,5 @@
 #pragma once
-#include <iostream>
-enum Color {
-	EMPTY = 0,
-	WHITE = 1,
-	BLACK = 2,
-};
+#include "Header.h"
 class Stone
 {
 	Color stoneColor;

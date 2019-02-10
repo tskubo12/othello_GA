@@ -9,11 +9,6 @@ Othello_Score::Othello_Score()
 	empty_num = 0;
 }
 
-
-Othello_Score::~Othello_Score()
-{
-}
-
 void Othello_Score::score_add(Color color)
 {
 	switch (color)
@@ -40,4 +35,15 @@ void Othello_Score::print_result()
 
 	if (black_num > white_num) std::cout << "WINNER : BLACK \n";
 	else if (white_num > black_num) std::cout << "WINNER : WHITE \n";
+}
+
+void Othello_Score::compute_result(Board &board)
+{
+	int rowNum, columNum;
+	for (rowNum = 0; rowNum < BOARDSIZE; rowNum++) {
+		for (columNum = 0; columNum < BOARDSIZE; columNum++) {
+			Point point(columNum, rowNum);
+			score_add(board.getPointColor(point));
+		}
+	}
 }

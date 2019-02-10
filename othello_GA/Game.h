@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include "Header.h"
 #include "Board.h"
 #include "Player.h"
 #include "Point.h"
@@ -8,7 +8,6 @@ class Game
 {
 	Board board_m;
 	Player player[2];
-	Point canReverseStonePoint[20];
 public:
 	Game();
 	~Game();

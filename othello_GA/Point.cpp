@@ -2,6 +2,20 @@
 #include "Point.h"
 
 
+bool Point::isOnBoard(int x, int y)
+{
+	bool retval;
+	if (x >= 0 && x < BOARDSIZE && y >= 0 && y < BOARDSIZE)
+	{
+		retval = true;
+	}
+	else {
+		retval = false;
+	}
+
+	return retval;
+}
+
 Point::Point() {}
 
 Point::Point(int x,int y)
@@ -10,16 +24,11 @@ Point::Point(int x,int y)
 	y_m = y;
 }
 
-
-Point::~Point()
-{
-}
-
-int Point::getX() {
+int Point::getX() const{
 	return x_m;
 }
 
-int Point::getY() {
+int Point::getY() const{
 	return y_m;
 }
 
@@ -28,21 +37,36 @@ void Point::printPoint()
 	printf("(%d , %d)\n",x_m,y_m);
 }
 
-void Point::setPoint(int x, int y)
+bool Point::setPoint(int x, int y)
 {
-	x_m = x;
-	y_m = y;
+	bool retval = false;
+	if (isOnBoard(x, y)) {
+		x_m = x;
+		y_m = y;
+		retval = true;
+	}
+	else {
+		retval = false;
+	}
+	return retval;
 }
 
-void Point::setPoint(Point point)
+bool Point::setPoint(Point point)
 {
-	setPoint(point.getX(), point.getY());
-}
+	int x = point.getX();
+	int y = point.getY();
 
-void Point::incrementPoint(int xPlus, int yPlus)//その座標に加算したい数値を引数とする
+	return setPoint(x, y);
+}
+//その座標に加算したい数値を引数とするできなかった場合はfalseを返す
+bool Point::incrementPoint(int xPlus, int yPlus)
 {
-	x_m += xPlus;
-	y_m += yPlus;
+	if(isOnBoard(x_m + xPlus,y_m + yPlus)){
+		x_m += xPlus;
+		y_m += yPlus;
+		return true;
+	}
+	return false;
 }
 
 /*ポイント型のリスト内にこのオブジェクトの座標と一致するものがあるか*/
@@ -53,3 +77,21 @@ bool Point::array_have_thisPoint(Point *array,int const &length )
 	}
 	return false;
 }
+
+bool Point::operator==(const Point &point)
+{
+	if ((x_m == point.getX()) && (y_m == point.getY())) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void Point::operator=(const Point &point)
+{
+	x_m = point.getX();
+	y_m = point.getY();
+}
+
+

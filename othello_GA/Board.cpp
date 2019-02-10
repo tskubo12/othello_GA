@@ -20,15 +20,6 @@ void Board::setVector(Point &want_to_checkPoint,Point &already_put_point,int &ve
 	setVector(diffY, vectorY);
 }
 
-bool Board::is_point_in_board(Point want_to_put)
-{
-	if (want_to_put.getX() < 0 || want_to_put.getY() < 0 || want_to_put.getX() > BOARDSIZE - 1 || want_to_put.getY() > BOARDSIZE - 1) {
-		return false;
-	}
-	else {
-		return true;
-	}
-}
 
 /*指定した座標(checkPoint)がplayerColorの逆の色であるかどうか()
 例えば、playerColorが白の場合、checkPointが黒であればtrueを返す
@@ -131,21 +122,23 @@ bool Board::canReversePointOnBoard(Point want_to_put,Color playerColor){
 	//want_to_putの左上から真上、右上、左....右下の順番でsearchResultに格納されていく
 	for(int searchPointY =y - 1;searchPointY <= y + 1;searchPointY++){
 		for (int searchPointX = x - 1; searchPointX <= x + 1; searchPointX++) {
-			searchPoint.setPoint(searchPointX, searchPointY);
-
-			/*座標(searchPointX,searchPointY)が盤外や空白を指したとき検索を行わない*/
-			if (!is_point_in_board(searchPoint)) continue;
-			if (isEmptyPoint(searchPoint)) continue;
-
-			
-			if (point_have_enemyStone(searchPoint,playerColor)) {
-				int vectorX;
-				int vectorY;
-				setVector(want_to_put, searchPoint, vectorX, vectorY);
-				if (can_reach_myStonePoint(vectorX, vectorY, playerColor, toPoint, want_to_put)) {
-					return true;
+			if (searchPoint.setPoint(searchPointX, searchPointY)) {
+				if (isEmptyPoint(searchPoint)) continue;
+				if (point_have_enemyStone(searchPoint, playerColor)) {
+					int vectorX;
+					int vectorY;
+					setVector(want_to_put, searchPoint, vectorX, vectorY);
+					if (can_reach_myStonePoint(vectorX, vectorY, playerColor, toPoint, want_to_put)) {
+						return true;
+					}
 				}
 			}
+			else {
+				continue;
+			}
+			/*座標(searchPointX,searchPointY)が盤外や空白を指したとき検索を行わない*/
+			//if (!is_point_in_board(searchPoint)) continue;
+			//if (isEmptyPoint(searchPoint)) continue;
 		}
 	}
 	return false;
@@ -166,16 +159,16 @@ void Board::reversePointOnBoard(Point putPoint, Color playerColor){
 	}
 }
 
-void Board::compute_result(Othello_Score &score)
-{
-	int rowNum, columNum;
-	for (rowNum = 0; rowNum < BOARDSIZE; rowNum++) {
-		for (columNum = 0; columNum < BOARDSIZE; columNum++) {
-			Point point(columNum, rowNum);
-			score.score_add(getPointColor(point));
-		}
-	}
-}
+//void Board::compute_result(Othello_Score &score)
+//{
+//	int rowNum, columNum;
+//	for (rowNum = 0; rowNum < BOARDSIZE; rowNum++) {
+//		for (columNum = 0; columNum < BOARDSIZE; columNum++) {
+//			Point point(columNum, rowNum);
+//			score.score_add(getPointColor(point));
+//		}
+//	}
+//}
 
 
 void Board::reversePointToPoint(Point oldPoint, Point putPoint, Color playerColor, int const &vectorX, int const &vectorY)
@@ -196,12 +189,12 @@ bool Board::can_reach_myStonePoint(int const&x, int const&y, Color playerColor,P
 {
 	int count = 0;
 	Point nowPoint(putPoint.getX(), putPoint.getY());
-	nowPoint.incrementPoint(x, y);
-	for (;is_point_in_board(nowPoint); nowPoint.incrementPoint(x,y)) {
-		if (isEmptyPoint(nowPoint)) continue;
+	while(nowPoint.incrementPoint(x,y) == true){
+		if (isEmptyPoint(nowPoint)) break;//continue;
 		if (getPointColor(nowPoint) == playerColor) {
 			if (count > 0) {
 				toPoint.setPoint(nowPoint);
+				toPoint = nowPoint;
 				return true;
 			}
 		}
@@ -211,30 +204,4 @@ bool Board::can_reach_myStonePoint(int const&x, int const&y, Color playerColor,P
 	}
 	return false;
 }
-
-
-
-/*石のおくことのできる座標を全てcanPutPoint配列に格納する*/
-bool Board::searchCanPutStone(Color playerColor, Point *canPutPoint, int &count)
-{
-	Point *pointTmp = canPutPoint;
-
-
-	//左上(0,0)から(0,1),(0,2)....(7,7)と見ていく
-	for (int x = 0; x < BOARDSIZE; x++) {
-		for (int y = 0; y < BOARDSIZE; y++) {
-			Point want_to_putPoint(x, y);
-			
-			if (canReversePointOnBoard(want_to_putPoint, playerColor)) {
-				canPutPoint->setPoint(want_to_putPoint);
-				canPutPoint++;
-				count++;
-			}
-		}
-	}
-
-	if (pointTmp != canPutPoint) return true;
-	else return false;
-}
-
 
