@@ -6,6 +6,9 @@ Player::Player(Color color)
 {
 	playerColor = color;
 }
+Player::Player()
+{
+}
 
 bool Player::createCanPutPointList(Board &board)
 {
@@ -32,9 +35,7 @@ bool Player::list_have_thisPoint(Point point)
 	return false;
 }
 
-Player::Player()
-{
-}
+
 
 void Player::printPlayerInfo() {
 	if (playerColor == 1) {
@@ -53,24 +54,25 @@ void Player::printPointList()
 }
 
 
-bool Player::inputPoint(Point &point) {
-	int x, y;
-	std::cout << "input X : ";
-	std::cin >> x;
-	std::cout << "input Y : ";
-	std::cin >> y;
-	
-	if (point.setPoint(x,y))
-	{
-		return true;
-	}
-	else {
-		return false;
-	} 
-	
-}
+//bool Player::inputPoint(Point &point) {
+//	int x, y;
+//	std::cout << "input X : ";
+//	std::cin >> x;
+//	std::cout << "input Y : ";
+//	std::cin >> y;
+//	
+//	if (point.setPoint(x,y))
+//	{
+//		return true;
+//	}
+//	else {
+//		return false;
+//	} 
+//	
+//}
 
-//プレイヤーが次石を置きたい場所を入力する
+//プレイヤーが次石を置きたい場所を入力しそれが置ける場所であるかチェックする
+//不可能な場合はfalseを返す
 bool Player::inputNextPoint() {
 	int x, y;
 	std::cout << "input X : ";
@@ -78,7 +80,7 @@ bool Player::inputNextPoint() {
 	std::cout << "input Y : ";
 	std::cin >> y;
 
-	if (nextPoint.setPoint(x,y))
+	if (nextPoint.setPoint(x,y) && (list_have_thisPoint(nextPoint)))
 	{
 		return true;
 	}
@@ -92,4 +94,9 @@ bool Player::inputNextPoint() {
 Color Player::getPlayerColor()
 {
 	return playerColor;
+}
+
+Point Player::getNextPoint()
+{
+	return nextPoint;
 }

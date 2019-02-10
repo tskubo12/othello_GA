@@ -78,10 +78,12 @@ void Board::printBoard() {
 
 
 
-//指定したpointにplayerColor色の石を置く
+//指定したpointにplayerColor色の石を置き、さらに返せる石をひっくり返す
 void Board::setStone(Point point,Color playerColor)
 {
 	stoneOnBoard[point.getY()][point.getX()].setStoneColor(playerColor);
+	reversePointOnBoard(point, playerColor);
+
 }
 
 
@@ -145,7 +147,7 @@ bool Board::canReversePointOnBoard(Point want_to_put,Color playerColor){
 }
 
 
-//指定したpointからひっくり返せる石の座標を返す
+//指定したpointから石をひっくり返す
 void Board::reversePointOnBoard(Point putPoint, Color playerColor){
 	//9方向への検索を行う
 	int vectorX, vectorY;
@@ -159,18 +161,7 @@ void Board::reversePointOnBoard(Point putPoint, Color playerColor){
 	}
 }
 
-//void Board::compute_result(Othello_Score &score)
-//{
-//	int rowNum, columNum;
-//	for (rowNum = 0; rowNum < BOARDSIZE; rowNum++) {
-//		for (columNum = 0; columNum < BOARDSIZE; columNum++) {
-//			Point point(columNum, rowNum);
-//			score.score_add(getPointColor(point));
-//		}
-//	}
-//}
-
-
+//指定したoldPointからputPointの間の石をひっくり返す
 void Board::reversePointToPoint(Point oldPoint, Point putPoint, Color playerColor, int const &vectorX, int const &vectorY)
 {
 	int putX = putPoint.getX() + vectorX;

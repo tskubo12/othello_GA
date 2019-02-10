@@ -13,7 +13,7 @@ public:
 	~Game();
 	bool nextTurn(Player & ,int &);
 	bool start_game();
-	bool finish_game();
+	void finish_game();
 	
 };
 

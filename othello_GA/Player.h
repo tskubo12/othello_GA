@@ -7,19 +7,18 @@ class Player
 {
 	Color playerColor;
 	Point nextPoint;
-	bool playerStatus;
 	vector<Point> canPutPointList;
-
+	bool list_have_thisPoint(Point);
 
 public:
 	Player();
 	Player(Color);
 	void printPlayerInfo();
 	void printPointList();
-	bool inputPoint(Point &);
+	//bool inputPoint(Point &);
 	bool inputNextPoint();
 	Color getPlayerColor();
+	Point getNextPoint();
 	bool createCanPutPointList(Board&);
-	bool list_have_thisPoint(Point);
 };
 
