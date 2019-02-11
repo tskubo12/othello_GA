@@ -8,6 +8,8 @@ Player::Player(Color color)
 }
 Player::Player()
 {
+	playerColor = EMPTY;
+
 }
 
 bool Player::createCanPutPointList(Board &board)
@@ -38,6 +40,9 @@ bool Player::list_have_thisPoint(Point point)
 
 
 void Player::printPlayerInfo() {
+	if (type == CPU) std::cout << " CPU \n";
+	else if (type == HUMAN) std::cout << " HUMAN \n";
+
 	if (playerColor == 1) {
 		std::cout << "WHITE(後攻)\n";
 	}
@@ -54,41 +59,8 @@ void Player::printPointList()
 }
 
 
-//bool Player::inputPoint(Point &point) {
-//	int x, y;
-//	std::cout << "input X : ";
-//	std::cin >> x;
-//	std::cout << "input Y : ";
-//	std::cin >> y;
-//	
-//	if (point.setPoint(x,y))
-//	{
-//		return true;
-//	}
-//	else {
-//		return false;
-//	} 
-//	
-//}
 
-//プレイヤーが次石を置きたい場所を入力しそれが置ける場所であるかチェックする
-//不可能な場合はfalseを返す
-bool Player::inputNextPoint() {
-	int x, y;
-	std::cout << "input X : ";
-	std::cin >> x;
-	std::cout << "input Y : ";
-	std::cin >> y;
 
-	if (nextPoint.setPoint(x,y) && (list_have_thisPoint(nextPoint)))
-	{
-		return true;
-	}
-	else {
-		return false;
-	}
-
-}
 
 
 Color Player::getPlayerColor()
@@ -99,4 +71,9 @@ Color Player::getPlayerColor()
 Point Player::getNextPoint()
 {
 	return nextPoint;
+}
+
+PlayerType Player::getPlayerType()
+{
+	return type;
 }

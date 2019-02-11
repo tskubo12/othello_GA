@@ -23,8 +23,6 @@ public:
 	Color getPointColor(Point);
 	void printBoard();
 	void setStone(Point,Color);
-	//void reversePointOnBoard(Point ,Color);
-	//void compute_result(Othello_Score&);
 	bool canReversePointOnBoard(Point, Color);
 };
 

@@ -24,9 +24,12 @@ Color Stone::getStoneColor(){
 
 Color Stone::getEnemyColor(Color myColor)
 {
-	if (myColor == BLACK) return WHITE;
-	else if(myColor == WHITE) return BLACK;
+	Color retColor = EMPTY;
+	if (myColor == BLACK) retColor=WHITE;
+	else if(myColor == WHITE) retColor=BLACK;
 	else std::cout << "this Point dont have Stone";
+
+	return retColor;
 }
 
 Stone::~Stone()

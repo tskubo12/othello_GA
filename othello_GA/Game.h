@@ -2,16 +2,18 @@
 #include "Header.h"
 #include "Board.h"
 #include "Player.h"
+#include "AiPlayer.h"
+#include "HumanPlayer.h"
 #include "Point.h"
 #include "Score.h"
 class Game
 {
 	Board board_m;
-	Player player[2];
+	std::vector<std::shared_ptr<Player>> player;
 public:
 	Game();
 	~Game();
-	bool nextTurn(Player & ,int &);
+	bool nextTurn(std::shared_ptr<Player> ,int &);
 	bool start_game();
 	void finish_game();
 	

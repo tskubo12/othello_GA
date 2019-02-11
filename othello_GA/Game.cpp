@@ -5,12 +5,14 @@
 Game::Game() //ゲームが始まった際に呼び出される
 {
 	board_m = Board();//ゲームボードを生成する
-	player[0] = Player(BLACK);
-	player[1] = Player(WHITE);
+	auto p1 = make_shared<HumanPlayer>(BLACK);
+	auto p2 = make_shared<AiPlayer>(WHITE);
+	player.push_back(p1);
+	player.push_back(p2);
 	std::cout << "player1 : "  ;
-	player[0].printPlayerInfo();
+	player[0]->printPlayerInfo();
 	std::cout << "player2 : ";
-	player[1].printPlayerInfo();
+	player[1]->printPlayerInfo();
 }
 
 
@@ -18,17 +20,17 @@ Game::~Game()
 {
 }
 
-bool Game::nextTurn(Player &nextPlayer,int &passCounter)
+bool Game::nextTurn(std::shared_ptr<Player> nextPlayer,int &passCounter)
 {
 	board_m.printBoard();
-	std::cout << "今のターンは" ;
-	nextPlayer.printPlayerInfo();
+	std::cout << "TURN : " ;
+	nextPlayer->printPlayerInfo();
 
-	Color playerColor = nextPlayer.getPlayerColor();
+	Color playerColor = nextPlayer->getPlayerColor();
 
 	//そのプレイヤーが石のおける場所を表示する
-	if (nextPlayer.createCanPutPointList(board_m)) {
-		nextPlayer.printPointList();
+	if (nextPlayer->createCanPutPointList(board_m)) {
+		nextPlayer->printPointList();
 	}
 	else {
 		std::cout << "PASS\n";
@@ -37,8 +39,8 @@ bool Game::nextTurn(Player &nextPlayer,int &passCounter)
 	}
 
 	//石を置き、間の石を反転する
-	if (nextPlayer.inputNextPoint()) {
-		board_m.setStone(nextPlayer.getNextPoint(), nextPlayer.getPlayerColor());
+	if (nextPlayer->inputNextPoint()) {
+		board_m.setStone(nextPlayer->getNextPoint(), nextPlayer->getPlayerColor());
 		passCounter = 0;
 		return true;
 	}
