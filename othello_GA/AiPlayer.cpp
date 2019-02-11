@@ -13,8 +13,11 @@ AiPlayer::~AiPlayer()
 }
 
 bool AiPlayer::inputNextPoint() {
-
-	if (nextPoint.setPoint(canPutPointList[0]) && (list_have_thisPoint(nextPoint)))
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<> rand(0, canPutPointList.size() -1);
+	auto result = rand(mt);
+	if (nextPoint.setPoint(canPutPointList[result]) && (list_have_thisPoint(nextPoint)))
 	{
 		return true;
 	}

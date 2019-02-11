@@ -2,11 +2,46 @@
 #include "Game.h"
 
 
+bool Game::playerChoice(int &p,Color color)
+{
+	std::cout << "-----SELECT PLAYER-----\nHumanPlayer : 1 , AiPlayer : 2 \n";
+	if (color == BLACK) {
+		std::cout << "BLACK : ";
+	}
+	else if (color == WHITE) {
+		std::cout << "WHITE : ";
+	}
+	std::cin >> p;
+	if (p!= 1 && p != 2) {
+		playerChoice(p, color);
+		return false;
+	}
+}
+
 Game::Game() //ゲームが始まった際に呼び出される
 {
 	board_m = Board();//ゲームボードを生成する
-	auto p1 = make_shared<HumanPlayer>(BLACK);
-	auto p2 = make_shared<AiPlayer>(WHITE);
+	int playerChoiceNum1 = 0;
+	int playerChoiceNum2 = 0;
+	//プレイヤーが人間かCPUかを決定する
+	shared_ptr<Player> p1, p2;
+	playerChoice(playerChoiceNum1, BLACK);
+	playerChoice(playerChoiceNum2, WHITE);
+
+	if (playerChoiceNum1 == 1) {
+		p1 = make_shared<HumanPlayer>(BLACK);
+	}
+	else if (playerChoiceNum1 == 2) {
+		p1 = make_shared<AiPlayer>(BLACK);
+	}
+
+	if (playerChoiceNum2 == 1) {
+		p2 = make_shared<HumanPlayer>(WHITE);
+	}
+	else if (playerChoiceNum2 == 2) {
+		p2 = make_shared<AiPlayer>(WHITE);
+	}
+
 	player.push_back(p1);
 	player.push_back(p2);
 	std::cout << "player1 : "  ;

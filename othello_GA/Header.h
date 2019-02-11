@@ -2,7 +2,7 @@
 #include<iostream>
 #include<vector>
 #include<memory>
-#define BOARDSIZE 4 
+#define BOARDSIZE 8 
 using namespace std;
 
 enum Color {

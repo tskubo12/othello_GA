@@ -10,6 +10,7 @@ class Game
 {
 	Board board_m;
 	std::vector<std::shared_ptr<Player>> player;
+	bool playerChoice(int &, Color);
 public:
 	Game();
 	~Game();
